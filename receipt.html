@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>وصل التحضير</title>
+  <style>
+    @page {
+      size: 80mm 297mm;
+      margin: 0;
+    }
+    body {
+      width: 80mm;
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+      font-size: 13px;
+      background: #f9f9f9;
+    }
+    .receipt {
+      padding: 10px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    h2 {
+      margin: 5px 0;
+      font-size: 18px;
+      color: #333;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 13px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 6px;
+      text-align: center;
+    }
+    th {
+      background: #f0f0f0;
+      color: #444;
+    }
+    .info {
+      margin-bottom: 10px;
+    }
+    .info p {
+      margin: 4px 0;
+    }
+    input {
+      border: none;
+      border-bottom: 1px solid #999;
+      font-size: 13px;
+      width: 100%;
+      padding: 3px;
+      background: transparent;
+    }
+    .qrcodes {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 15px;
+    }
+    .qrcode-section img {
+      width: 60px;
+      height: 60px;
+    }
+    .footer {
+      margin-top: auto;
+      padding: 5px;
+      font-size: 12px;
+      text-align: center;
+      color: #666;
+    }
+    .separator {
+      border-top: 1px dashed #999;
+      margin: 10px 0;
+    }
+    .action-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 15px;
+    }
+    .action-buttons button, .add-product-btn {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+    .action-buttons button:hover, .add-product-btn:hover {
+      background: #45a049;
+    }
+    .add-product-btn {
+      margin: 10px 0;
+      width: 100%;
+    }
+    @media print {
+      .no-print, .hide-on-print {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+<script>
+  if (localStorage.getItem('isAuthenticated') !== 'true') {
+    window.location.href = "index.html";
+  }
+</script>
+<div class="receipt">
+  <h2>وصل التحضير</h2>
+
+  <div class="info">
+    <p><strong>الاسم:</strong> <input type="text" id="nameInput"></p>
+    <p><strong>الهاتف:</strong> <input type="text" id="phoneInput"></p>
+    <p><strong>المنطقة:</strong> <input type="text" id="areaInput"></p>
+    <p><strong>وقت التوصيل:</strong> <input type="text" id="timeInput"></p>
+    <p class="hide-on-print"><strong>اللوكيشن:</strong> <input type="text" id="locationInput"></p>
+  </div>
+
+  <div class="separator"></div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>اسم المنتج</th>
+        <th>الكمية</th>
+      </tr>
+    </thead>
+    <tbody id="orderItems"></tbody>
+  </table>
+
+  <button id="addProductBtn" class="add-product-btn no-print">+ إضافة منتج</button>
+
+  <div class="qrcodes">
+    <div class="qrcode-section">
+      <p>لوكيشن</p>
+      <img id="locationQR" src="https://api.qrserver.com/v1/create-qr-code/?size=60x60&data=https://maps.google.com" alt="لوكيشن">
+    </div>
+    <div class="qrcode-section">
+      <p>رقم هاتف</p>
+      <img id="phoneQR" src="https://api.qrserver.com/v1/create-qr-code/?size=60x60&data=tel:" alt="رقم الهاتف">
+    </div>
+  </div>
+
+  <div class="footer">
+    <p id="dateTime"></p>
+  </div>
+
+  <div class="action-buttons no-print">
+    <button id="copyBtn">نسخ</button>
+    <button id="printBtn">طباعة</button>
+    <button onclick="logout()">خروج</button>
+  </div>
+</div>
+
+<script>
+function logout() {
+  localStorage.removeItem('isAuthenticated');
+  window.location.href = "index.html";
+}
+
+function updateQRs() {
+  const phone = document.getElementById('phoneInput').value;
+  const location = document.getElementById('locationInput').value;
+
+  if (phone) {
+    document.getElementById('phoneQR').src = `https://api.qrserver.com/v1/create-qr-code/?size=60x60&data=tel:${phone}`;
+  }
+  if (location) {
+    document.getElementById('locationQR').src = `https://api.qrserver.com/v1/create-qr-code/?size=60x60&data=${encodeURIComponent(location)}`;
+  }
+}
+
+document.getElementById('phoneInput').addEventListener('input', updateQRs);
+document.getElementById('locationInput').addEventListener('input', updateQRs);
+
+document.getElementById('copyBtn').addEventListener('click', function() {
+  const receiptContent = document.querySelector('.receipt').innerText;
+  navigator.clipboard.writeText(receiptContent).then(() => alert('تم نسخ البيانات'));
+});
+
+document.getElementById('printBtn').addEventListener('click', function() {
+  window.print();
+});
+
+document.getElementById('addProductBtn').addEventListener('click', addProductRow);
+
+function addProductRow(name = '', quantity = '') {
+  const tbody = document.getElementById('orderItems');
+  const newRow = document.createElement('tr');
+  newRow.innerHTML = `
+    <td><input class="product-input" type="text" value="${name}" placeholder="اسم المنتج"></td>
+    <td><input class="quantity-input" type="text" value="${quantity}" placeholder="الكمية"></td>
+  `;
+  tbody.appendChild(newRow);
+}
+
+function displaySelectedProducts() {
+  const selectedProducts = JSON.parse(localStorage.getItem('selectedProducts')) || [];
+  const tbody = document.getElementById('orderItems');
+  tbody.innerHTML = '';
+  selectedProducts.forEach(product => addProductRow(product.name, product.quantity));
+}
+
+function updateDateTime() {
+  const now = new Date();
+  const formatted = now.toLocaleString('ar-EG', { hour12: false });
+  document.getElementById('dateTime').textContent = `تاريخ الوصول: ${formatted}`;
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  displaySelectedProducts();
+  updateDateTime();
+});
+</script>
+</body>
+</html>
