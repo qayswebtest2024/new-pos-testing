@@ -1,367 +1,321 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>نظام المبيعات</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نظام وصل التحضير - تسجيل الدخول</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
+    :root {
+      --primary-color: #4361ee;
+      --secondary-color: #3f37c9;
+      --error-color: #f72585;
+      --light-color: #f8f9fa;
+      --dark-color: #212529;
+    }
+    
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
+    
     body {
-      margin: 0;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
       display: flex;
-      flex-direction: row-reverse;
-      height: 100vh;
-      background-color: #f4f4f4;
-    }
-    .sidebar {
-      width: 400px;
-      background: white;
-      padding: 20px;
-      overflow-y: auto;
-      border-left: 1px solid #ddd;
-    }
-    .main {
-      flex: 1;
-      padding: 20px;
-      overflow-y: auto;
-    }
-    header {
-      background-color: #4361ee;
-      color: white;
-      padding: 15px;
-      border-radius: 10px;
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    .categories {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-      overflow-x: auto;
-    }
-    .category-btn {
-      background: white;
-      border: 1px solid #ccc;
-      border-radius: 20px;
-      padding: 8px 15px;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-    .category-btn.active {
-      background: #4361ee;
-      color: white;
-    }
-    .products-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 15px;
-    }
-    .product-card {
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      overflow: hidden;
-    }
-    .product-image {
-      height: 100px;
-      background: #eee;
-      display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
     }
-    .product-info {
-      padding: 10px;
-      text-align: center;
-    }
-    .add-to-receipt-btn {
-      margin-top: 10px;
-      background-color: #4361ee;
-      color: white;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .receipt-section h2 {
-      margin-bottom: 10px;
-    }
-    .info p {
-      margin: 6px 0;
-      font-weight: bold;
-    }
-    .info input {
+    
+    .login-container {
+      background-color: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
       width: 100%;
-      padding: 5px;
-      margin-top: 3px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-      font-size: 14px;
-      background: #fdfdfd;
-    }
-    th, td {
-      border: 1px solid #ccc;
-      padding: 8px;
-      text-align: center;
-    }
-    .notes-cell {
+      max-width: 420px;
+      overflow: hidden;
       position: relative;
     }
-    .notes-textarea {
-      width: 95%;
-      resize: vertical;
-      height: 40px;
-      margin-top: 5px;
-      display: none;
+    
+    .login-header {
+      background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+      position: relative;
     }
-    .notes-display {
-      display: none;
-      padding: 5px;
-      background: #f8f8f8;
-      border-radius: 4px;
-      margin-top: 5px;
-      text-align: right;
-      font-size: 12px;
+    
+    .login-header h1 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
     }
-    .notes-cell:hover .notes-textarea {
+    
+    .login-header p {
+      opacity: 0.9;
+      font-size: 0.9rem;
+    }
+    
+    .login-body {
+      padding: 30px;
+    }
+    
+    .logo {
+      width: 80px;
+      height: 80px;
+      background-color: white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: -60px auto 20px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+    
+    .logo i {
+      font-size: 2.5rem;
+      color: var(--primary-color);
+    }
+    
+    .input-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+    
+    .input-group label {
       display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--dark-color);
     }
-    .notes-cell:hover .notes-display {
-      display: none;
-    }
-    .qr-container {
+    
+    .pin-container {
       display: flex;
-      justify-content: space-around;
-      margin-top: 10px;
+      justify-content: space-between;
+      direction: ltr;
     }
-    .receipt-actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 15px;
+    
+    .pin-input {
+      width: 60px;
+      height: 60px;
+      text-align: center;
+      font-size: 1.5rem;
+      border: 2px solid #e9ecef;
+      border-radius: 8px;
+      transition: all 0.3s;
     }
-    .receipt-actions button {
-      flex: 1;
-      padding: 10px;
-      background-color: #4361ee;
+    
+    .pin-input:focus {
+      border-color: var(--primary-color);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+    }
+    
+    .login-btn {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
       color: white;
       border: none;
       border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
       cursor: pointer;
-      font-weight: bold;
-      transition: 0.3s;
+      transition: all 0.3s;
+      margin-top: 10px;
     }
-    .receipt-actions button:hover {
-      background: #364fc7;
+    
+    .login-btn:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
     }
-    @media print {
-      body * {
-        visibility: hidden;
+    
+    .login-btn:active {
+      transform: translateY(0);
+    }
+    
+    .error-msg {
+      color: var(--error-color);
+      text-align: center;
+      margin-top: 15px;
+      font-size: 0.9rem;
+      display: none;
+    }
+    
+    .attempts-counter {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 0.9rem;
+      color: #6c757d;
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 0.8rem;
+      color: #6c757d;
+    }
+    
+    @media (max-width: 480px) {
+      .pin-input {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
       }
-      #printArea, #printArea * {
-        visibility: visible;
-      }
-      #printArea {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 100%;
+      
+      .login-body {
         padding: 20px;
-        background: white;
-      }
-      .notes-textarea {
-        display: none !important;
-      }
-      .notes-display {
-        display: block !important;
       }
     }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
 </head>
 <body>
-
-  <div class="sidebar">
-    <div class="receipt-section">
-      <h2>وصل التحضير</h2>
-      <div class="info">
-        <p>اسم العميل: <input id="clientName" type="text"></p>
-        <p>رقم الهاتف: <input id="clientPhone" type="text" oninput="generateQRCodes()"></p>
-        <p>منطقة التوصيل: <input id="clientAddress" type="text"></p>
-        <p>وقت التوصيل: <input id="deliveryTime" type="text"></p>
-        <p>رابط اللوكيشن: <input id="locationLink" type="text" oninput="generateQRCodes()"></p>
-      </div>
-
-      <div id="printArea">
-        <p>اسم العميل: <span id="printName"></span></p>
-        <p>رقم الهاتف: <span id="printPhone"></span></p>
-        <p>منطقة التوصيل: <span id="printAddress"></span></p>
-        <p>وقت التوصيل: <span id="printTime"></span></p>
-
-        <table id="receiptTable">
-          <thead>
-            <tr>
-              <th>المنتج</th>
-              <th>الكمية</th>
-              <th>الإجمالي</th>
-              <th>ملاحظات</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-
-        <div class="qr-container">
-          <canvas id="phoneQR"></canvas>
-          <canvas id="locationQR"></canvas>
+  <div class="login-container">
+    <div class="login-header">
+      <h1>مرحباً بك</h1>
+      <p>  .
+.
+.
+      </p>
+    </div>
+    
+    <div class="logo">
+      <i class="fas fa-lock"></i>
+    </div>
+    
+    <div class="login-body">
+      <div class="input-group">
+        <label>أدخل رمز PIN المكون من 4 أرقام</label>
+        <div class="pin-container" id="pinContainer">
+          <input type="password" class="pin-input" maxlength="1" data-index="1" inputmode="numeric" pattern="[0-9]*">
+          <input type="password" class="pin-input" maxlength="1" data-index="2" inputmode="numeric" pattern="[0-9]*">
+          <input type="password" class="pin-input" maxlength="1" data-index="3" inputmode="numeric" pattern="[0-9]*">
+          <input type="password" class="pin-input" maxlength="1" data-index="4" inputmode="numeric" pattern="[0-9]*">
         </div>
       </div>
-
-      <div class="receipt-actions">
-        <button onclick="preparePrint()">🖨️ طباعة</button>
-        <button onclick="clearReceipt()">🗑️ تفريغ</button>
+      
+      <button class="login-btn" id="loginBtn">
+        <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
+      </button>
+      
+      <div class="error-msg" id="errorMsg">
+        <i class="fas fa-exclamation-circle"></i> رمز PIN غير صحيح
+      </div>
+      
+      <div class="attempts-counter" id="attemptsCounter">
+        المحاولات المتبقية: <span id="attemptsLeft">3</span>
+      </div>
+      
+      <div class="footer">
+        <p>النظام الآلي© </p>
       </div>
     </div>
-  </div>
-
-  <div class="main">
-    <header>
-      <h1>قائمة المنتجات</h1>
-    </header>
-    <div class="categories">
-      <button class="category-btn active" data-category="all">الكل</button>
-      <button class="category-btn" data-category="food">أطعمة</button>
-      <button class="category-btn" data-category="drinks">مشروبات</button>
-      <button class="category-btn" data-category="desserts">حلويات</button>
-    </div>
-    <div class="products-grid" id="productsGrid"></div>
   </div>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbyrqr8wYduPDLZ8TzR1g9uRSzOqMFj5ZtuyGqCR_elQcccVwat_2tbctfoNCIOt4Vqc8g/exec";
-    const selectedProducts = new Map();
-
-    async function fetchProducts() {
-      const res = await fetch(API_URL);
-      return res.json();
-    }
-
-    function displayProducts(products, category = 'all') {
-      const grid = document.getElementById("productsGrid");
-      grid.innerHTML = '';
-      const filtered = category === 'all' ? products : products.filter(p => p.category === category);
-      filtered.forEach((p, index) => {
-        const card = document.createElement("div");
-        card.className = "product-card";
-        card.innerHTML = `
-          <div class="product-image">${p.image ? `<img src="${p.image}" style="width:100%;height:100px;object-fit:cover">` : '🛒'}</div>
-          <div class="product-info">
-            <div>${p.name}</div>
-            <div>${p.price} ر.س</div>
-            <button class="add-to-receipt-btn" 
-                    data-name="${p.name}" 
-                    data-price="${p.price}">اضف إلى الفاتورة</button>
-          </div>`;
-        grid.appendChild(card);
-      });
-    }
-
-    document.addEventListener("click", function (e) {
-      if (e.target && e.target.classList.contains("add-to-receipt-btn")) {
-        const name = e.target.getAttribute("data-name");
-        const price = parseFloat(e.target.getAttribute("data-price"));
-        addToReceipt({ name, price });
-      }
-    });
-
-    function addToReceipt(product) {
-      const key = product.name;
-      const tbody = document.querySelector("#receiptTable tbody");
-
-      if (selectedProducts.has(key)) {
-        const row = selectedProducts.get(key);
-        const qtyCell = row.querySelector(".qty");
-        const totalCell = row.querySelector(".total");
-        const newQty = parseInt(qtyCell.textContent) + 1;
-        qtyCell.textContent = newQty;
-        totalCell.textContent = (newQty * product.price).toFixed(2) + " ر.س";
-      } else {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${product.name}</td>
-          <td class="qty">1</td>
-          <td class="total">${product.price.toFixed(2)} ر.س</td>
-          <td class="notes-cell">
-            <div class="notes-display"></div>
-            <textarea class="notes-textarea" placeholder="أضف ملاحظات..." onchange="updateNotes(this)"></textarea>
-          </td>
-        `;
-        selectedProducts.set(key, tr);
-        tbody.appendChild(tr);
-      }
-    }
-
-    function updateNotes(textarea) {
-      const notesDisplay = textarea.parentElement.querySelector('.notes-display');
-      if (textarea.value.trim()) {
-        notesDisplay.textContent = "📌 " + textarea.value;
-        notesDisplay.style.display = 'block';
-      } else {
-        notesDisplay.style.display = 'none';
-      }
-    }
-
-    function preparePrint() {
-      document.getElementById("printName").textContent = document.getElementById("clientName").value;
-      document.getElementById("printPhone").textContent = document.getElementById("clientPhone").value;
-      document.getElementById("printAddress").textContent = document.getElementById("clientAddress").value;
-      document.getElementById("printTime").textContent = document.getElementById("deliveryTime").value;
-
-      // تحديث الملاحظات للطباعة
-      document.querySelectorAll("#receiptTable tbody tr").forEach(row => {
-        const textarea = row.querySelector("textarea");
-        const notesDisplay = row.querySelector(".notes-display");
-        if (textarea && textarea.value.trim()) {
-          notesDisplay.textContent = "📌 " + textarea.value.trim();
-          notesDisplay.style.display = 'block';
+    // PIN الصحيح (يمكن تغييره)
+    const CORRECT_PIN = "9763";
+    let attemptsLeft = 3;
+    
+    // عناصر DOM
+    const pinInputs = document.querySelectorAll('.pin-input');
+    const loginBtn = document.getElementById('loginBtn');
+    const errorMsg = document.getElementById('errorMsg');
+    const attemptsLeftSpan = document.getElementById('attemptsLeft');
+    
+    // التركيز على أول حقل عند تحميل الصفحة
+    pinInputs[0].focus();
+    
+    // إدارة إدخال PIN
+    pinInputs.forEach((input, index) => {
+      // الانتقال للحقل التالي عند الإدخال
+      input.addEventListener('input', (e) => {
+        if (e.target.value.length === 1) {
+          if (index < pinInputs.length - 1) {
+            pinInputs[index + 1].focus();
+          }
         }
       });
-
-      window.print();
-    }
-
-    function clearReceipt() {
-      selectedProducts.clear();
-      document.querySelector("#receiptTable tbody").innerHTML = "";
-      document.getElementById("phoneQR").getContext('2d').clearRect(0, 0, 60, 60);
-      document.getElementById("locationQR").getContext('2d').clearRect(0, 0, 60, 60);
-    }
-
-    function generateQRCodes() {
-      const phone = document.getElementById("clientPhone").value;
-      const location = document.getElementById("locationLink").value;
-      if (phone) QRCode.toCanvas(document.getElementById("phoneQR"), phone);
-      if (location) QRCode.toCanvas(document.getElementById("locationQR"), location);
-    }
-
-    document.querySelectorAll('.category-btn').forEach(btn => {
-      btn.onclick = async () => {
-        document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const products = await fetchProducts();
-        displayProducts(products, btn.dataset.category);
-      };
+      
+      // التعامل مع مفتاح backspace
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && e.target.value.length === 0) {
+          if (index > 0) {
+            pinInputs[index - 1].focus();
+          }
+        }
+      });
     });
-
-    window.addEventListener('DOMContentLoaded', async () => {
-      const products = await fetchProducts();
-      displayProducts(products);
+    
+    // زر تسجيل الدخول
+    loginBtn.addEventListener('click', () => {
+      const enteredPin = Array.from(pinInputs).map(input => input.value).join('');
+      
+      if (enteredPin.length !== 4) {
+        showError("الرجاء إدخال رمز PIN مكون من 4 أرقام");
+        return;
+      }
+      
+      if (enteredPin === CORRECT_PIN) {
+        // تسجيل الدخول الناجح
+        localStorage.setItem('isAuthenticated', 'true');
+        window.location.href = "products.html";
+      } else {
+        attemptsLeft--;
+        attemptsLeftSpan.textContent = attemptsLeft;
+        
+        if (attemptsLeft <= 0) {
+          showError("لقد تجاوزت عدد المحاولات المسموحة. الرجاء المحاولة لاحقاً.");
+          loginBtn.disabled = true;
+          setTimeout(() => {
+            attemptsLeft = 3;
+            attemptsLeftSpan.textContent = attemptsLeft;
+            loginBtn.disabled = false;
+            clearInputs();
+          }, 30000); // 30 ثانية قبل إعادة المحاولة
+        } else {
+          showError("رمز PIN غير صحيح");
+          shakeInputs();
+          clearInputs();
+          pinInputs[0].focus();
+        }
+      }
     });
+    
+    // وظائف مساعدة
+    function showError(message) {
+      errorMsg.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+      errorMsg.style.display = 'block';
+    }
+    
+    function clearInputs() {
+      pinInputs.forEach(input => {
+        input.value = '';
+      });
+    }
+    
+    function shakeInputs() {
+      const pinContainer = document.getElementById('pinContainer');
+      pinContainer.style.animation = 'shake 0.5s';
+      
+      setTimeout(() => {
+        pinContainer.style.animation = '';
+      }, 500);
+    }
+    
+    // إضافة تأثير الاهتزاز للرسوم المتحركة
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+        20%, 40%, 60%, 80% { transform: translateX(5px); }
+      }
+    `;
+    document.head.appendChild(style);
   </script>
 </body>
 </html>
